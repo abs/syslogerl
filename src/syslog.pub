@@ -1,0 +1,8 @@
+{name, "syslog"}.
+{vsn, {1,1}}.
+{summary, "Interface to the Unix syslog facility."}.
+{author, "Torbjorn Tornkvist", "tnt@home.se", "990125"}.
+{author, "Andrei Soroker", "soroker@gmail.com", "94607"}.
+{keywords, ["syslog"]}.
+{needs, []}.
+{abstract,"This is a simple interface to the Unix syslog facility."}.
