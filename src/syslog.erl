@@ -63,11 +63,11 @@ stop() ->
     ?SERVER_NAME ! {self(), stop},
     receive stopped -> ok end.
 
-send(Who, Level, Msg) when is_atom(Who), is_integer(Level), is_list(Msg) ->
+send(Who, Level, Msg) when is_atom(Who), is_integer(Level) ->
     ?SERVER_NAME ! {send, {Who, Level, Msg}}.
 
 send(Facility, Who, Level, Msg) 
-  when is_integer(Facility), is_atom(Who), is_integer(Level), is_list(Msg) ->
+  when is_integer(Facility), is_atom(Who), is_integer(Level) ->
     ?SERVER_NAME ! {send, {Facility, Who, Level, Msg}}.
 
 %% Convenient routines for specifying levels.
@@ -122,12 +122,19 @@ loop(S, Host, Port) ->
 %% and the top 28 bits are the facility (0-big number).    
 
 do_send(S, Host, Port, {Who, Level, Msg}) ->
-    Packet = "<" ++ i2l(Level) ++ "> " ++ a2l(Who) ++ ": " ++ Msg ++ "\n",
+    % Packet = "<" ++ i2l(Level) ++ "> " ++ a2l(Who) ++ ": " ++ Msg ++ "\n",
+    Packet = packet(Level, Who, Msg),
     gen_udp:send(S, Host, Port, Packet);
 do_send(S, Host, Port, {Facil, Who, Level, Msg}) ->
     FacilLev = i2l((Facil bsl 3) bor Level),
-    Packet = "<" ++ FacilLev ++ "> " ++ a2l(Who) ++ ": " ++ Msg ++ "\n",
+    % Packet = "<" ++ FacilLev ++ "> " ++ a2l(Who) ++ ": " ++ Msg ++ "\n",
+    Packet = packet(FacilLev, Who, Msg),
     gen_udp:send(S, Host, Port, Packet).
+
+packet(Level, Who, Msg) when is_binary(Msg) ->
+    iolist_to_binary([<<"<">>, Level, <<">">>, a2l(Who), <<": ">>, Msg, <<"\n">>]);
+packet(Level, Who, Msg) when is_list(Msg) ->
+    "<" ++ Level ++ "> " ++ a2l(Who) ++ ": " ++ Msg ++ "\n".
 
 local_host() ->
     {ok, Hname} = inet:gethostname(),

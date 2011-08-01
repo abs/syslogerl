@@ -19,3 +19,4 @@ clean:
 	rm -f ebin/*.beam
 	rm -f $(TARGETS)
 	rm -f doc/*
+	rmdir ebin
