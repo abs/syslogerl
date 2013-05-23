@@ -1,7 +1,7 @@
--module(syslog).
+-module(syslogerl).
 -author('tobbe@serc.rmit.edu.au').
 %%%----------------------------------------------------------------------
-%%% File    : syslog.erl
+%%% File    : syslogerl.erl
 %%% Author  : Torbjorn Tornkvist <tobbe@serc.rmit.edu.au>
 %%% Purpose : Interface to the Unix syslog facility.
 %%% Created : 2 Dec 1998 by Torbjorn Tornkvist <tobbe@serc.rmit.edu.au>
@@ -13,14 +13,14 @@
 %%%           - Added Host, Port init parameters
 %%%           - Fixed priority/facility encoding logic
 %%%
-%%%           syslog:start_link()
-%%%           syslog:stop()  
-%%%           syslog:send(Program, Level, Msg)
-%%%           syslog:send(Facility, Program, Level, Msg)
+%%%           syslogerl:start_link()
+%%%           syslogerl:stop()  
+%%%           syslogerl:send(Program, Level, Msg)
+%%%           syslogerl:send(Facility, Program, Level, Msg)
 %%%
-%%% Examples: syslog:send(my_ppp, syslog:debug(), "LCP link established")
-%%%           syslog:send(syslog:mail(), my_mailer, syslog:err(), Msg)
-%%%           syslog:send(17, my_service, syslog:info(), Msg) % 17 -> local1
+%%% Examples: syslogerl:send(my_ppp, syslogerl:debug(), "LCP link established")
+%%%           syslogerl:send(syslogerl:mail(), my_mailer, syslogerl:err(), Msg)
+%%%           syslogerl:send(17, my_service, syslogerl:info(), Msg) % 17 -> local1
 %%%
 %%%----------------------------------------------------------------------
 %% Exported
