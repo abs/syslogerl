@@ -14,7 +14,7 @@
 %%%           - Fixed priority/facility encoding logic
 %%%
 %%%           syslogerl:start_link()
-%%%           syslogerl:stop()  
+%%%           syslogerl:stop()
 %%%           syslogerl:send(Program, Level, Msg)
 %%%           syslogerl:send(Facility, Program, Level, Msg)
 %%%
@@ -36,7 +36,7 @@
 
 version() -> "1.7".
 
-start_link() -> 
+start_link() ->
     start_link(local_host(), syslog_port()).
 
 start_link({Host, Port}) ->
@@ -49,7 +49,7 @@ start_link(Val) when is_list(Val) ->
     {ok, InetName} = inet:getaddr(Val, inet),
     start_link(InetName, syslog_port()).
 
-start_link(Host, Port) -> 
+start_link(Host, Port) ->
     case whereis(?SERVER_NAME) of
 	    Pid when is_pid(Pid) ->
             {ok, Pid};
@@ -66,37 +66,37 @@ stop() ->
 send(Who, Level, Msg) when is_atom(Who), is_integer(Level) ->
     ?SERVER_NAME ! {send, {Who, Level, Msg}}.
 
-send(Facility, Who, Level, Msg) 
+send(Facility, Who, Level, Msg)
   when is_integer(Facility), is_atom(Who), is_integer(Level) ->
     ?SERVER_NAME ! {send, {Facility, Who, Level, Msg}}.
 
 %% Convenient routines for specifying levels.
 
-emergency() -> 0. % system is unusable 
-alert()     -> 1. % action must be taken immediately 
-critical()  -> 2. % critical conditions 
-error()     -> 3. % error conditions 
-warning()   -> 4. % warning conditions 
-notice()    -> 5. % normal but significant condition 
+emergency() -> 0. % system is unusable
+alert()     -> 1. % action must be taken immediately
+critical()  -> 2. % critical conditions
+error()     -> 3. % error conditions
+warning()   -> 4. % warning conditions
+notice()    -> 5. % normal but significant condition
 info()      -> 6. % informational
-debug()     -> 7. % debug-level messages 
+debug()     -> 7. % debug-level messages
 
 %% Convenient routines for specifying facility codes
 
-kern()     -> (0 bsl 3) . % kernel messages 
-user()     -> (1 bsl 3) . % random user-level messages 
-mail()     -> (2 bsl 3) . % mail system 
-daemon()   -> (3 bsl 3) . % system daemons 
-auth()     -> (4 bsl 3) . % security/authorization messages 
-syslog()   -> (5 bsl 3) . % messages generated internally by syslogd 
-lpr()      -> (6 bsl 3) . % line printer subsystem 
-news()     -> (7 bsl 3) . % network news subsystem 
-uucp()     -> (8 bsl 3) . % UUCP subsystem 
-cron()     -> (9 bsl 3) . % clock daemon 
-authpriv() -> (10 bsl 3). % security/authorization messages (private) 
-ftp()      -> (11 bsl 3). % ftp daemon 
+kern()     -> (0 bsl 3) . % kernel messages
+user()     -> (1 bsl 3) . % random user-level messages
+mail()     -> (2 bsl 3) . % mail system
+daemon()   -> (3 bsl 3) . % system daemons
+auth()     -> (4 bsl 3) . % security/authorization messages
+syslog()   -> (5 bsl 3) . % messages generated internally by syslogd
+lpr()      -> (6 bsl 3) . % line printer subsystem
+news()     -> (7 bsl 3) . % network news subsystem
+uucp()     -> (8 bsl 3) . % UUCP subsystem
+cron()     -> (9 bsl 3) . % clock daemon
+authpriv() -> (10 bsl 3). % security/authorization messages (private)
+ftp()      -> (11 bsl 3). % ftp daemon
 
-	  
+
 %% ----------
 %% The server
 %% ----------
@@ -117,9 +117,9 @@ loop(S, Host, Port) ->
 	    loop(S, Host, Port)
     end.
 
-%% priorities/facilities are encoded into a single 32-bit 
-%% quantity, where the bottom 3 bits are the priority (0-7) 
-%% and the top 28 bits are the facility (0-big number).    
+%% priorities/facilities are encoded into a single 32-bit
+%% quantity, where the bottom 3 bits are the priority (0-7)
+%% and the top 28 bits are the facility (0-big number).
 
 do_send(S, Host, Port, {Who, Level, Msg}) ->
     % Packet = "<" ++ i2l(Level) ++ "> " ++ a2l(Who) ++ ": " ++ Msg ++ "\n",
