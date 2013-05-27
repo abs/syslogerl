@@ -33,6 +33,7 @@
 -export([kern/0, user/0, mail/0, daemon/0, auth/0, syslog/0, lpr/0,
 	 news/0, uucp/0, cron/0, authpriv/0, ftp/0]).
 -export([facility_to_number/1]).
+-export([severity_to_number/1]).
 %% Internal
 -export([init/2]).
 
@@ -84,6 +85,15 @@ warning()   -> 4. % warning conditions
 notice()    -> 5. % normal but significant condition
 info()      -> 6. % informational
 debug()     -> 7. % debug-level messages
+
+severity_to_number(emergency) -> 0;
+severity_to_number(alert) -> 1;
+severity_to_number(critical) -> 2;
+severity_to_number(error) -> 3;
+severity_to_number(warning) -> 4;
+severity_to_number(notice) -> 5;
+severity_to_number(info) -> 6;
+severity_to_number(debug) -> 7.
 
 %% Convenient routines for specifying facility codes
 
