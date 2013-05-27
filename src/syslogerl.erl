@@ -2,7 +2,10 @@
 -author('tobbe@serc.rmit.edu.au').
 %%%----------------------------------------------------------------------
 %%% File    : syslogerl.erl
+%%%
 %%% Author  : Torbjorn Tornkvist <tobbe@serc.rmit.edu.au>
+%%% Author  : Andrei Soroker <soroker@gmail.com>
+%%%
 %%% Purpose : Interface to the Unix syslog facility.
 %%% Created : 2 Dec 1998 by Torbjorn Tornkvist <tobbe@serc.rmit.edu.au>
 %%% Function: See also the man page for syslog.conf
@@ -29,6 +32,7 @@
 	 notice/0, info/0, debug/0]).
 -export([kern/0, user/0, mail/0, daemon/0, auth/0, syslog/0, lpr/0,
 	 news/0, uucp/0, cron/0, authpriv/0, ftp/0]).
+-export([facility_to_number/1]).
 %% Internal
 -export([init/2]).
 
@@ -145,3 +149,24 @@ syslog_port() -> 514.
 i2l(Int) -> integer_to_list(Int).
 
 a2l(Atom) -> atom_to_list(Atom).
+
+facility_to_number(kern) -> 0;
+facility_to_number(user) -> 1;
+facility_to_number(mail) -> 2;
+facility_to_number(daemon) -> 3;
+facility_to_number(auth) -> 4;
+facility_to_number(syslog) -> 5;
+facility_to_number(lpr) -> 6;
+facility_to_number(news) -> 7;
+facility_to_number(uucp) -> 8;
+facility_to_number(authpriv) -> 10;
+facility_to_number(ftp) -> 11;
+facility_to_number(cron) -> 15;
+facility_to_number(local0) -> 16;
+facility_to_number(local1) -> 17;
+facility_to_number(local2) -> 18;
+facility_to_number(local3) -> 19;
+facility_to_number(local4) -> 20;
+facility_to_number(local5) -> 21;
+facility_to_number(local6) -> 22;
+facility_to_number(local7) -> 23.
