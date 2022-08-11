@@ -5,6 +5,7 @@
 %%%
 %%% Author  : Torbjorn Tornkvist <tobbe@serc.rmit.edu.au>
 %%% Author  : Andrei Soroker <soroker@gmail.com>
+%%% Author  : Yaroslav Lapin <jlarky@gmail.com>
 %%%
 %%% Purpose : Interface to the Unix syslog facility.
 %%% Created : 2 Dec 1998 by Torbjorn Tornkvist <tobbe@serc.rmit.edu.au>
@@ -15,6 +16,9 @@
 %%%             a supervisor: rename start to start_link
 %%%           - Added Host, Port init parameters
 %%%           - Fixed priority/facility encoding logic
+%%%
+%%% Modified by Yaroslav Lapin On Feb 26 2016
+%%%           - Host, Port in sys.config
 %%%
 %%%           syslogerl:start_link()
 %%%           syslogerl:stop()
@@ -151,10 +155,21 @@ packet(Level, Who, Msg) when is_list(Msg) ->
     "<" ++ Level ++ "> " ++ a2l(Who) ++ ": " ++ Msg ++ "\n".
 
 local_host() ->
-    {ok, Hname} = inet:gethostname(),
-    Hname.
+    case application:get_env(syslogerl, host) of
+        {ok, Host} ->
+            Host;
+        undefined ->
+            {ok, Hname} = inet:gethostname(),
+            Hname
+    end.
 
-syslog_port() -> 514.
+syslog_port() ->
+    case application:get_env(syslogerl, port) of
+        {ok, Port} ->
+            Port;
+        undefined ->
+            514
+    end.
 
 i2l(Int) -> integer_to_list(Int).
 
